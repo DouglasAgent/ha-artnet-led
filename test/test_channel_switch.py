@@ -164,3 +164,19 @@ def test_16bit_xy_values():
     assert brightness == 255
     assert x == 255
     assert y == 255
+
+def test_to_values_off_keeps_unscaled_channels():
+    values = to_values("dRGBrgbxy", 1, False, 255, red=255, green=128, blue=64, x=0.5, y=0.25)
+
+    # dimmer and brightness-scaled channels go to zero
+    assert values[0] == 0
+    assert values[4:7] == [0, 0, 0]
+    # unscaled colour channels hold their colour, so a fade from off starts at the right colour
+    assert values[1:4] == [255, 128, 64]
+    assert values[7] == 127
+    assert values[8] == 63
+
+    is_on, brightness, _, _, _, _, _, _, _, _ = from_values("dRGB", 1, values[:4])
+
+    assert not is_on
+    assert brightness == 0

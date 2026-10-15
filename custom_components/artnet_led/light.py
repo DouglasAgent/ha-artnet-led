@@ -405,14 +405,15 @@ class DmxBaseLight(LightEntity, RestoreEntity):
         Instruct the light to turn off. If a transition time has been specified in seconds
         the controller will fade.
         """
+        self._state = False
+
         transition = kwargs.get(ATTR_TRANSITION, self._fade_time)
 
         self._channel.set_fade(
-            [0 for _ in range(self._channel._width)],
+            self.get_target_values(),
             transition * 1000
         )
 
-        self._state = False
         self.async_schedule_update_ha_state()
 
     async def async_added_to_hass(self) -> None:
@@ -488,7 +489,7 @@ class DmxBinary(DmxBaseLight):
         self._channel_value_change()
 
     def get_target_values(self):
-        return [self.brightness * self._channel_size[1]]
+        return [self.brightness * self._channel_size[1] if self.is_on else 0]
 
     async def async_turn_on(self, **kwargs):
         if ATTR_FLASH in kwargs:

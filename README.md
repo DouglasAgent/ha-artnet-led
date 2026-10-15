@@ -187,6 +187,10 @@ _Staticly sets the green channel on 50% brightness_
 - `y` = Y value in XY color mode
 - [`0`, `255`] = static value between the range [0, 255] 
 
+When a light is turned off, `d` and the channels scaled for brightness fade to `0`.
+All other channels (unscaled colour, temperature, hue/saturation, XY) keep their current value,
+so the light keeps its colour while off and a fade from off starts at the right colour.
+
 
 #### Compatibility
 

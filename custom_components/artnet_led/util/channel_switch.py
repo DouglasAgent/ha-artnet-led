@@ -66,25 +66,25 @@ def to_values(channel_setup: str, channel_size: int, is_on: bool = True, brightn
     # u = hue
     # U = saturation
     switcher = {
-        "d": lambda: brightness,
+        "d": lambda: is_on * brightness,
         "r": lambda: is_on * red * brightness / max_color,
-        "R": lambda: is_on * red * 255 / max_color,
+        "R": lambda: red * 255 / max_color,
         "g": lambda: is_on * green * brightness / max_color,
-        "G": lambda: is_on * green * 255 / max_color,
+        "G": lambda: green * 255 / max_color,
         "b": lambda: is_on * blue * brightness / max_color,
-        "B": lambda: is_on * blue * 255 / max_color,
+        "B": lambda: blue * 255 / max_color,
         "w": lambda: is_on * cold_white * brightness / max_color,
-        "W": lambda: is_on * cold_white * 255 / max_color,
+        "W": lambda: cold_white * 255 / max_color,
         "c": lambda: is_on * cold_white * brightness / max_color,
-        "C": lambda: is_on * cold_white * 255 / max_color,
+        "C": lambda: cold_white * 255 / max_color,
         "h": lambda: is_on * warm_white * brightness / max_color,
-        "H": lambda: is_on * warm_white * 255 / max_color,
+        "H": lambda: warm_white * 255 / max_color,
         "t": lambda: (color_temp_kelvin - min_kelvin) * 255 / kelvin_diff,
         "T": lambda: 255 - (color_temp_kelvin - min_kelvin) * 255 / kelvin_diff,
         "u": lambda: color_RGB_to_hsv(red, green, blue)[0] * 255 / 360,
         "U": lambda: color_RGB_to_hsv(red, green, blue)[1] * 255 / 100,
-        "x": lambda: is_on * x * 255 if x is not None else 128,
-        "y": lambda: is_on * y * 255 if y is not None else 128,
+        "x": lambda: x * 255 if x is not None else 128,
+        "y": lambda: y * 255 if y is not None else 128,
     }
 
     values: list[int] = list()
